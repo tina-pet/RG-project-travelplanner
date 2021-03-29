@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import database from '../utils/db.js'
 
 export default function NewTripForm() {
-  const [tripName, setTripName] = useState('');
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateUntil, setDateUntil] = useState('');
+  const [tripName, setTripName] = useState('')
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateUntil, setDateUntil] = useState('')
 
   const data = {
     nazev: tripName,
     datumOd: dateFrom,
     datumDo: dateUntil,
-  };
+  }
   const handleSubmit = (event) => {
-    event.preventDefault;
-    itineraryAppend(data);
-  };
+    event.preventDefault
+    database.itineraryAppend(data)
+  }
   return (
     <div className="new-trip__form">
       <form type="submit">
@@ -41,5 +42,5 @@ export default function NewTripForm() {
         <button onSubmit={handleSubmit}>Vytvořit</button>
       </form>
     </div>
-  );
+  )
 }

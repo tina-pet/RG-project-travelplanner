@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import database from '../utils/db.js';
-import NewTripForm from '../components/NewTripForm.jsx';
+import React, { useState } from 'react'
+import Link from 'next/link'
+
+import NewTripForm from '../components/NewTripForm.jsx'
 // import './list.css';
 
-export default function List() {
-  const [trips, setTrips] = useState([]);
-  const [newTrip, setNewTrip] = useState(false);
-
-  useEffect(() => {
-    database.itineraryList().then((json) => setTrips(json));
-  }, []);
+export default function List({ data }) {
+  const [newTrip, setNewTrip] = useState(false)
+  const trips = data
 
   return (
     <main className="list">
@@ -32,5 +28,13 @@ export default function List() {
         ))}
       </div>
     </main>
-  );
+  )
+}
+
+export async function getServerSideProps() {
+  const res = await fetch(
+    'https://czechitas-itinerar.free.beeceptor.com/itinerar'
+  )
+  const data = await res.json()
+  return { props: { data } }
 }
