@@ -1,19 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import { ItineraryItem } from '../../components/ItineraryItem/ItineraryItem.jsx';
-import database from '../../utils/db.js';
 // import './itinerary.css';
 
-export default function List() {
-  const { id } = useRouter().query;
-  const [items, setItems] = useState([]);
-  const [name, setName] = useState('');
-
-  useEffect(() => {
-    database.itemList(id).then((json) => setItems(json));
-    database.itineraryDetail(id).then((json) => setName(json.nazev));
-  }, []);
-
+export default function List({ name, items }) {
   return (
     <div className="itinerary-card">
       <h2>{name}</h2>
@@ -24,4 +13,22 @@ export default function List() {
       </ul>
     </div>
   );
+}
+
+export async function getServerSideProps({ params }) {
+  try {
+    const res = await fetch(
+      `https://czechitas-itinerar.free.beeceptor.com/itinerar/${params.id}`
+    );
+    const res2 = await fetch(
+      `https://czechitas-itinerar.free.beeceptor.com/itinerar/${params.id}/polozka`
+    );
+    const data = await res.json();
+    const name = data.nazev;
+    const items = await res2.json();
+
+    return { props: { name, items } };
+  } catch (e) {
+    console.log(e);
+  }
 }

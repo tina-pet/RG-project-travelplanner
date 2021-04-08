@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import database from '../utils/db.js';
 
 export default function NewTripForm() {
   const [tripName, setTripName] = useState('');
@@ -11,12 +12,12 @@ export default function NewTripForm() {
     datumDo: dateUntil,
   };
   const handleSubmit = (event) => {
-    event.preventDefault;
-    itineraryAppend(data);
+    event.preventDefault();
+    database.itineraryAppend(data);
   };
   return (
     <div className="new-trip__form">
-      <form type="submit">
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Kam se chystáte?"
@@ -38,7 +39,7 @@ export default function NewTripForm() {
           value={dateUntil}
           onChange={(e) => setDateUntil(e.target.value)}
         ></input>
-        <button onSubmit={handleSubmit}>Vytvořit</button>
+        <button type="submit">Vytvořit</button>
       </form>
     </div>
   );
